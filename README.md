@@ -33,3 +33,14 @@ Usage
 
 <!-- Hi, ewized! This is the default README for every ten.java submission. -->
 <!-- We encourage you to edit this README with some information about your submission – keep in mind you'll be scored on documentation! -->
+
+
+Random Events
+-------------
+
+To enable debug mode set the JVM flag `-Ddebug` this will make all events happen with out randomness and show debug messages.
+
+- **Doors** 
+> Doors will have a chance to send you to other dimensions.
+- **Diamonds** 
+> When an item will have a random change to turn into diamonds.
