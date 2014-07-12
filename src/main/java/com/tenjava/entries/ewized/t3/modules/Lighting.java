@@ -8,6 +8,7 @@ import com.tenjava.entries.ewized.t3.util.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.EntityType;
@@ -18,6 +19,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockVector;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @ModuleInfo(name = "Explode", listeners = {Lighting.class})
 public class Lighting extends Module implements Listener {
@@ -28,15 +30,15 @@ public class Lighting extends Module implements Listener {
     private final int MOB_SPAWN = 10;
     private final int MOB_CHANCE = 150;
     private final Random rand = Common.random;
-    private static List<BlockVector> strikes = Collections.synchronizedList(new ArrayList<>());
-    private static List<BlockVector> spread = Collections.synchronizedList(new ArrayList<>());
+    private static Map<BlockVector, World> strikes = new ConcurrentHashMap<>();
+    private static Map<BlockVector, World> spread = new ConcurrentHashMap<>();
     private BukkitTask clock;
 
     public void start() {
         clock = Bukkit.getScheduler().runTaskTimer(TenJava.get(), () -> {
             // strikes spawns random mobs
-            strikes.forEach(block -> {
-                Location location = block.toLocation(Bukkit.getWorlds().get(0));
+            strikes.forEach((block, world) -> {
+                Location location = block.toLocation(world);
                 switch (rand.nextInt(MOB_CHANCE)) {
                     case 0:
                         mobSpawn(location).getWorld().spawnEntity(location, EntityType.BAT);
@@ -58,30 +60,28 @@ public class Lighting extends Module implements Listener {
             });
 
             // Spread blocks
-            List<BlockVector> threadSafe = new ArrayList<>(spread);
-            spread.forEach(blockVector -> {
-                Block block = blockVector.toLocation(Bukkit.getWorlds().get(0)).getBlock();
+            spread.forEach((blockVector, world) -> {
+                Block block = blockVector.toLocation(world).getBlock();
 
                 for (BlockFace face : faces) {
                     Block relative = block.getRelative(face);
 
                     // Remove block vector from spread
                     if (badBlocks.contains(relative.getType())) {
-                        threadSafe.remove(new BlockVector(relative.getLocation().toVector()));
+                        spread.remove(new BlockVector(relative.getLocation().toVector()));
                     }
                     // Add blocks to spread and change block
-                    else if (!noSpread.contains(relative.getType()) && rand.nextInt(4) == 0){
-                        threadSafe.add(new BlockVector(relative.getLocation().toVector()));
+                    else if (!noSpread.contains(relative.getType()) && rand.nextInt(4) == 0) {
+                        spread.put(new BlockVector(relative.getLocation().toVector()), relative.getWorld());
                         relative.setType(setBadBlock());
                     }
                     // Randomly clear out blocks to prevent take over
                     else if (spread.size() > KILL_LIMIT) {
-                        threadSafe.clear();
+                        spread.clear();
                         break;
                     }
                 }
             });
-            spread = threadSafe;
 
             //Common.debug("STRIKES: " + strikes.size());
             //Common.debug("SPREAD: " + spread.size());
@@ -113,11 +113,12 @@ public class Lighting extends Module implements Listener {
     @EventHandler
     public void onLighting(LightningStrikeEvent e) {
         // Add location to internal clock
-        BlockVector block = new BlockVector(e.getLightning().getLocation().toVector());
+        Location loc = e.getLightning().getLocation();
+        BlockVector block = new BlockVector(loc.toVector());
 
-        strikes.add(block);
+        strikes.put(block, loc.getWorld());
 
-        spread.add(block);
+        spread.put(block, loc.getWorld());
 
         //Common.debug(block.toString());
     }
