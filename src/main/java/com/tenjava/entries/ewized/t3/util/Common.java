@@ -3,10 +3,13 @@ package com.tenjava.entries.ewized.t3.util;
 import com.tenjava.entries.ewized.t3.TenJava;
 import org.bukkit.ChatColor;
 
+import java.util.Random;
 import java.util.logging.Level;
 
 public final class Common {
     private static boolean debug;
+    public static final int TICK = 20;
+    public static final Random random = new Random();
 
     static {
         debug = Boolean.parseBoolean(System.getProperty("debug"));
@@ -33,5 +36,10 @@ public final class Common {
     /** Color a string */
     public static String color(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
+    }
+
+    /** Percentage wrapper */
+    public static float percent(int total, int position) {
+        return (float) (((double) position / (double) total) * 100) / 100;
     }
 }
