@@ -23,6 +23,7 @@ import java.util.*;
 public class Lighting extends Module implements Listener {
     private final Set<BlockFace> faces = ImmutableSet.of(BlockFace.DOWN, BlockFace.UP, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST);
     private final Set<Material> badBlocks = ImmutableSet.of(Material.SOUL_SAND, Material.NETHER_BRICK, Material.NETHERRACK, Material.OBSIDIAN, Material.FIRE, Material.ENDER_STONE);
+    private final Set<Material> noSpread = ImmutableSet.of(Material.AIR, Material.STONE, Material.BEDROCK, Material.WATER, Material.LAVA, Material.STATIONARY_WATER, Material.STATIONARY_LAVA);
     private final int KILL_LIMIT = 2048;
     private final int MOB_SPAWN = 10;
     private final int MOB_CHANCE = 150;
@@ -69,15 +70,14 @@ public class Lighting extends Module implements Listener {
                         threadSafe.remove(new BlockVector(relative.getLocation().toVector()));
                     }
                     // Add blocks to spread and change block
-                    else if (!relative.getType().equals(Material.AIR) && rand.nextInt(10) == 5){
+                    else if (!noSpread.contains(relative.getType()) && rand.nextInt(4) == 0){
                         threadSafe.add(new BlockVector(relative.getLocation().toVector()));
                         relative.setType(setBadBlock());
                     }
                     // Randomly clear out blocks to prevent take over
                     else if (spread.size() > KILL_LIMIT) {
-                        for (int i = 0; i < rand.nextInt(spread.size()); i++) {
-                            threadSafe.remove(rand.nextInt(spread.size()));
-                        }
+                        threadSafe.clear();
+                        break;
                     }
                 }
             });
