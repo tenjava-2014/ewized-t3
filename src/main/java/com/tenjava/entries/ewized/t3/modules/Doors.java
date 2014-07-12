@@ -25,7 +25,7 @@ import java.util.*;
 @ModuleInfo(name = "Doors", listeners = {Doors.class})
 public class Doors extends Module implements Listener {
     private Random rand = Common.random;
-    private Map<Player, List<BukkitTask>> playerTasks = new HashMap<>();
+    private Map<Player, List<BukkitTask>> playerTasks = new WeakHashMap<>();
 
     @EventHandler
     public void onDoor(PlayerInteractEvent e) {

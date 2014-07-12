@@ -26,25 +26,35 @@ public class Bows extends Module implements Listener {
     public void onBow(EntityShootBowEvent e) {
         World world = e.getEntity().getWorld();
         Vector vector = e.getProjectile().getVelocity();
-        Location loc = e.getEntity().getLocation().clone().add(0, e.getEntity().getEyeHeight(), 0).add(0, 1.5, 0);
+        Location loc = e.getEntity().getLocation().clone().add(0, e.getEntity().getEyeHeight(), 0).add(0, 0.7, 0);
         Entity entity;
+        String message = "&7&m--&r ";
 
         switch (rand.nextInt(CHANCE)) {
             case 0:
                 entity = world.spawnEntity(loc, EntityType.PRIMED_TNT);
+                message += "&6Whoo, that's tnt not an arrow!";
                 break;
             case 1:
                 entity = world.spawnEntity(loc, EntityType.EGG);
+                message += "&6An Egg?";
                 break;
             case 2:
                 entity = world.spawnEntity(loc, EntityType.ENDER_PEARL);
                 enderPearls.put( entity.getEntityId(), (Player) e.getEntity());
+                message += "&6I'm like an &oEnder Man&6!";
                 break;
             case 3:
                 entity = world.spawnEntity(loc, EntityType.FIREBALL);
+                message += "&6Wait, I'm a &oGhast&6?";
                 break;
             case 4:
                 entity = world.spawnEntity(loc, EntityType.FIREWORK);
+                message += "&6Purity";
+                break;
+            case 5:
+                entity = e.getEntity();
+                message += "&6Ahhh! I shot myself!";
                 break;
             default:
                 entity = world.spawnEntity(loc, EntityType.ARROW);
@@ -54,9 +64,14 @@ public class Bows extends Module implements Listener {
 
         //Common.debug(loc.toString());
 
+        if (!message.equals("&7&m--&r ")) {
+            ((Player) e.getEntity()).sendMessage(Common.color(message));
+        }
+
         e.setProjectile(entity);
     }
 
+    /** Teleport the player if the player shot an ender pearl */
     @EventHandler
     public void onHit(ProjectileHitEvent e) {
         if (enderPearls.containsKey(e.getEntity().getEntityId())) {
@@ -64,6 +79,7 @@ public class Bows extends Module implements Listener {
         }
     }
 
+    /** Effects when player is teleported by the ender bow */
     @EventHandler
     public void onTeleport(PlayerTeleportEvent e) {
         if (e.getCause() != PlayerTeleportEvent.TeleportCause.PLUGIN) return;
