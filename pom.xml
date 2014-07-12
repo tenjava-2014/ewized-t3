@@ -3,8 +3,8 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.tenjava.entries.ewized.t3</groupId> <!-- you're welcome to change this -->
     <artifactId>ewized-t3</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>ten.java 2014 July</name>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>SoRandom</name>
     <description>Contest entry for ten.java 2014 July</description>
 
     <properties>
