@@ -58,6 +58,7 @@ release.properties
 *.ipr
 *.iws
 *.iml
+git.properties
 
 ## Additional for IntelliJ
 out/
