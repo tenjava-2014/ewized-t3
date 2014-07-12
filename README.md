@@ -41,8 +41,13 @@ Random Events
 To enable debug mode set the JVM flag `-Ddebug` this will make all events happen with out randomness and show debug messages.
 
 - **Doors** 
+
 > Doors will have a chance to send you to other dimensions.
+
 - **Diamonds** 
+
 > When an item will have a random change to turn into diamonds.
+
 - **Lighting**
+
 > When lighting strikes it will tear apart your world, spawning mobs and killing your land.
