@@ -21,7 +21,7 @@ import org.bukkit.util.BlockVector;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-@ModuleInfo(name = "Explode", listeners = {Lighting.class})
+@ModuleInfo(name = "Lighting Spread", listeners = {Lighting.class})
 public class Lighting extends Module implements Listener {
     private final Set<BlockFace> faces = ImmutableSet.of(BlockFace.DOWN, BlockFace.UP, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST);
     private final Set<Material> badBlocks = ImmutableSet.of(Material.SOUL_SAND, Material.NETHER_BRICK, Material.NETHERRACK, Material.OBSIDIAN, Material.FIRE, Material.ENDER_STONE);
