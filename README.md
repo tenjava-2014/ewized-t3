@@ -46,11 +46,11 @@ To enable debug mode set the JVM flag `-Ddebug` this will make all events happen
 
 - **Diamonds** 
 
-> When an item will have a random change to turn into diamonds.
+> When an item despawn or is dispensed it will have a random chance to turn into diamonds.
 
 - **Lighting**
 
-> When lighting strikes it will tear apart your world, spawning mobs and killing your land.
+> When lighting strikes it will have a chance to tear apart your world, spawning mobs and killing your land.
 
 - **Bows**
 
