@@ -20,13 +20,13 @@ import java.util.*;
 public class Bows extends Module implements Listener {
     private final int CHANCE = 10;
     private final Random rand = Common.random;
-    Map<Player, Integer> enderPearls = new WeakHashMap<>();
+    Map<Integer, Player> enderPearls = new WeakHashMap<>();
 
     @EventHandler(ignoreCancelled = true)
     public void onBow(EntityShootBowEvent e) {
         World world = e.getEntity().getWorld();
         Vector vector = e.getProjectile().getVelocity();
-        Location loc = e.getEntity().getLocation().clone().add(0, e.getEntity().getEyeHeight(), 0).add(0, 0.5, 0);
+        Location loc = e.getEntity().getLocation().clone().add(0, e.getEntity().getEyeHeight(), 0).add(0, 1.5, 0);
         Entity entity;
 
         switch (rand.nextInt(CHANCE)) {
@@ -38,7 +38,13 @@ public class Bows extends Module implements Listener {
                 break;
             case 2:
                 entity = world.spawnEntity(loc, EntityType.ENDER_PEARL);
-                enderPearls.put((Player) e.getEntity(), entity.getEntityId());
+                enderPearls.put( entity.getEntityId(), (Player) e.getEntity());
+                break;
+            case 3:
+                entity = world.spawnEntity(loc, EntityType.FIREBALL);
+                break;
+            case 4:
+                entity = world.spawnEntity(loc, EntityType.FIREWORK);
                 break;
             default:
                 entity = world.spawnEntity(loc, EntityType.ARROW);
@@ -53,8 +59,8 @@ public class Bows extends Module implements Listener {
 
     @EventHandler
     public void onHit(ProjectileHitEvent e) {
-        if (enderPearls.containsValue(e.getEntity().getEntityId())) {
-            e.getEntity().teleport(e.getEntity().getLocation());
+        if (enderPearls.containsKey(e.getEntity().getEntityId())) {
+            enderPearls.get(e.getEntity().getEntityId()).teleport(e.getEntity().getLocation());
         }
     }
 
@@ -64,7 +70,7 @@ public class Bows extends Module implements Listener {
 
         Player player = e.getPlayer();
 
-        if (enderPearls.containsKey(player)) {
+        if (enderPearls.containsValue(player)) {
             Location to = e.getTo().clone();
 
             to.setX(to.getBlockX() >= 0 ? to.getBlockX() + 0.5 : to.getBlockX() - 0.5);
