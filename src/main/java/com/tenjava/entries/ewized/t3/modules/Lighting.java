@@ -21,6 +21,12 @@ import org.bukkit.util.BlockVector;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * This module will create chaos on lighting strikes,
+ * each lighting strike will have a chance to create chaos.
+ * Their will be world decay at the spot that the lighting striked,
+ * and at the location will spawn mobs forever.
+ */
 @ModuleInfo(name = "Lighting Spread", listeners = {Lighting.class})
 public class Lighting extends Module implements Listener {
     private final Set<BlockFace> faces = ImmutableSet.of(BlockFace.DOWN, BlockFace.UP, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST);
@@ -34,6 +40,7 @@ public class Lighting extends Module implements Listener {
     private static Map<BlockVector, World> spread = new ConcurrentHashMap<>();
     private BukkitTask clock;
 
+    @Override
     public void start() {
         clock = Bukkit.getScheduler().runTaskTimer(TenJava.get(), () -> {
             // strikes spawns random mobs
@@ -90,6 +97,7 @@ public class Lighting extends Module implements Listener {
 
     }
 
+    /** get the location based on above settings */
     private Location mobSpawn(Location location) {
         Location newLoc = location.clone();
 
@@ -100,25 +108,30 @@ public class Lighting extends Module implements Listener {
         );
     }
 
+    /** Set a random bad block used for spread */
     private Material setBadBlock() {
         List<Material> blocks = new ArrayList<>(badBlocks);
         Collections.shuffle(blocks);
         return blocks.get(rand.nextInt(blocks.size()));
     }
 
+    @Override
     public void stop() {
         clock.cancel();
     }
 
+    /** When the lighting strikes add it to the clock */
     @EventHandler
     public void onLighting(LightningStrikeEvent e) {
         // Add location to internal clock
         Location loc = e.getLightning().getLocation();
         BlockVector block = new BlockVector(loc.toVector());
 
-        strikes.put(block, loc.getWorld());
+        if (rand.nextInt(10) == 5 || Common.isDebug()) {
+            strikes.put(block, loc.getWorld());
 
-        spread.put(block, loc.getWorld());
+            spread.put(block, loc.getWorld());
+        }
 
         //Common.debug(block.toString());
     }

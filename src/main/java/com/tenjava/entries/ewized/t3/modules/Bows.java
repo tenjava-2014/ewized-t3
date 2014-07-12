@@ -14,14 +14,22 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.util.Vector;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Random;
+import java.util.WeakHashMap;
 
+/**
+ * This Module will change the way bows act,
+ * this will give the bows some randomness to it
+ * and make the bow say a silly message when it happens.
+ */
 @ModuleInfo(name = "Bows", listeners = {Bows.class})
 public class Bows extends Module implements Listener {
     private final int CHANCE = 10;
     private final Random rand = Common.random;
     Map<Integer, Player> enderPearls = new WeakHashMap<>();
 
+    /** Change the way bows act */
     @EventHandler(ignoreCancelled = true)
     public void onBow(EntityShootBowEvent e) {
         World world = e.getEntity().getWorld();

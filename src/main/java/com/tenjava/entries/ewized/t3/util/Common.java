@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import java.util.Random;
 import java.util.logging.Level;
 
+/** Common methods that are used through out plugin */
 public final class Common {
     private static boolean debug;
     public static final int TICK = 20;

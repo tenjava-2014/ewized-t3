@@ -1,6 +1,5 @@
 package com.tenjava.entries.ewized.t3.modules;
 
-import com.tenjava.entries.ewized.t3.TenJava;
 import com.tenjava.entries.ewized.t3.module.Module;
 import com.tenjava.entries.ewized.t3.module.ModuleInfo;
 import com.tenjava.entries.ewized.t3.util.Clocks;
@@ -15,7 +14,10 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.WeakHashMap;
 
 /**
  * This random event will treat the doors like dimension doors
@@ -27,6 +29,7 @@ public class Doors extends Module implements Listener {
     private Random rand = Common.random;
     private Map<Player, List<BukkitTask>> playerTasks = new WeakHashMap<>();
 
+    /** When the player opens a door they have a chance to travel dimmensions */
     @EventHandler
     public void onDoor(PlayerInteractEvent e) {
         //Common.debug(e.getClickedBlock().toString());
@@ -51,6 +54,7 @@ public class Doors extends Module implements Listener {
         }
     }
 
+    /** Teleport effects when you travel */
     @EventHandler
     public void onTeleport(PlayerTeleportEvent e) {
         if (e.getCause() != PlayerTeleportEvent.TeleportCause.PLUGIN) return;
@@ -72,6 +76,7 @@ public class Doors extends Module implements Listener {
         }
     }
 
+    /** Door tasks to run when the player activates a dimension door */
     private class DoorTasks extends Clocks {
         private Player player;
 
