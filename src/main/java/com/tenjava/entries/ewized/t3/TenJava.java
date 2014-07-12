@@ -3,6 +3,7 @@ package com.tenjava.entries.ewized.t3;
 import com.tenjava.entries.ewized.t3.module.ModuleManager;
 import com.tenjava.entries.ewized.t3.modules.Diamonds;
 import com.tenjava.entries.ewized.t3.modules.Doors;
+import com.tenjava.entries.ewized.t3.modules.Lighting;
 import com.tenjava.entries.ewized.t3.util.Common;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -26,6 +27,7 @@ public class TenJava extends JavaPlugin {
         modules.builder()
             .add(Doors.class)
             .add(Diamonds.class)
+            .add(Lighting.class)
             .startAll();
     }
 
