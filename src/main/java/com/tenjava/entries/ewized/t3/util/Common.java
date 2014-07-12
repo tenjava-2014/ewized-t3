@@ -42,4 +42,9 @@ public final class Common {
     public static float percent(int total, int position) {
         return (float) (((double) position / (double) total) * 100) / 100;
     }
+
+    /** Debug */
+    public static boolean isDebug() {
+        return debug;
+    }
 }
