@@ -8,7 +8,7 @@ import java.util.logging.Level;
 public final class Common {
     private static boolean debug;
 
-    private Common() {
+    static {
         debug = Boolean.parseBoolean(System.getProperty("debug"));
     }
 

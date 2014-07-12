@@ -1,5 +1,6 @@
 package com.tenjava.entries.ewized.t3;
 
+import com.tenjava.entries.ewized.t3.util.Common;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -14,6 +15,7 @@ public class TenJava extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        Common.debug("Debug Enabled");
 
     }
 
