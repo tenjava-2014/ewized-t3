@@ -51,3 +51,7 @@ To enable debug mode set the JVM flag `-Ddebug` this will make all events happen
 - **Lighting**
 
 > When lighting strikes it will tear apart your world, spawning mobs and killing your land.
+
+- **Bows**
+
+> Shooting bows are so random that you have a chance to shoot an entity you did not expect.
