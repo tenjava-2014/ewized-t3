@@ -35,7 +35,7 @@ public class Doors extends Module implements Listener {
         Material door = e.getClickedBlock() == null ? null : e.getClickedBlock().getType();
 
         //Common.debug(door.toString());
-        if (door != null && door.equals(Material.WOODEN_DOOR) && rand.nextInt(10) == 5) {
+        if (door != null && door.equals(Material.WOODEN_DOOR) && rand.nextInt(10) == 5 || Common.isDebug()) {
             //Common.debug("WOOD DOOR");
 
             // Cancle pending tasks
